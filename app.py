@@ -6,8 +6,8 @@ app = Flask(__name__)
 def home():
     return render_template('nasaLanding.html')
 
-@app.route('/page2')
-def page2():
+@app.route('/valuationForm')
+def valutationForm():
     return render_template('valuationForm.html')
 
 if __name__ == '__main__':

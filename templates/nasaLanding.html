@@ -61,8 +61,11 @@
             <h1>Please fill out this form so we can retrieve the data that you need:</h1>
         </div>
         <div class="row">
-            <button class="glow-button" onclick="location.href='./valuationForm.html';">Click me</button>
+            <form action="{{ url_for('valutationForm') }}" method="get">
+                <button class="glow-button" type="submit">Click me</button>
+            </form>
         </div>
+        
         <hr>
     </div>
 </body>
