@@ -7,6 +7,7 @@ from sklearn.decomposition import PCA
 from sklearn.metrics import mean_squared_error, r2_score
 import signal
 import time
+import matplotlib.pyplot as plt
 
 # Function to handle timeout
 def handler(signum, frame):
@@ -160,6 +161,55 @@ def main():
         print(f"Predicted values and depreciation saved to '{output_path}'.")
     except Exception as e:
         print(f"Error during prediction or saving results: {e}")
+
+    # Take input for a specific car and generate a depreciation graph
+    try:
+        print("Taking input for a specific car...")
+        car_attributes = {
+            'ID': 12345678,
+            'Prod. year': 2020,
+            'Cylinders': 4.0,
+            'Airbags': 6,
+            'Levy_1011': False,
+            'Color_Black': False,
+            'Color_Blue': True,
+            'Color_Brown': False,
+            'Color_Green': False,
+            'Color_Grey': False,
+            'Color_Orange': False,
+            'Color_Pink': False,
+            'Color_Purple': False,
+            'Color_Red': False,
+            'Color_Silver': False,
+            'Color_Sky blue': False,
+            'Color_White': False,
+            'Color_Yellow': False
+        }
+
+        car_df = pd.DataFrame([car_attributes])
+        car_df = preprocess_data(car_df, columns=train_columns.drop('Price'))  # Exclude 'Price' column
+        car_scaled = scaler.transform(car_df)
+        car_pca = pca.transform(car_scaled)
+        car_price = model.predict(car_pca)[0]
+        print(f"Predicted price for the input car: {car_price}")
+
+        # Predict future values for the input car
+        future_values = [car_price]
+        for year in range(1, 6):
+            future_value, _ = predict_future_value(future_values[-1])
+            future_values.append(future_value)
+
+        # Generate depreciation graph from 2025 to 2030
+        years = list(range(2025, 2031))
+        plt.plot(years, future_values, marker='o')
+        plt.title('Depreciation Graph')
+        plt.xlabel('Year')
+        plt.ylabel('Predicted Price')
+        plt.grid(True)
+        plt.show()
+
+    except Exception as e:
+        print(f"Error during input car prediction or graph generation: {e}")
 
 if __name__ == "__main__":
     main()
