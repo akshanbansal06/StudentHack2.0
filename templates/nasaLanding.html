@@ -35,11 +35,9 @@
 
 <body>
     <div class="main">
-        <hr>
         <div class="header">
             <h1>Value your car!</h1>
         </div>
-        <br>
         <div class="carousel">
             <div class="carousel-container">
               <div class="carousel-item"><img src="../static/images/carousel/photo2.webp" alt="Photo 2"></div>
@@ -56,7 +54,7 @@
                     mileage, model year, and regional trends to provide you with a fair, transparent valuation in seconds.</p>
             </div>
         </div>
-        <br>
+
         <div class="row">
             <h1>Please fill out this form so we can retrieve the data that you need:</h1>
         </div>
@@ -74,9 +72,10 @@
 
     hr {
         border: none;
-        border-top: 5px solid var(--blue1);
-        margin: 40px auto;
-        width: 80%;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, var(--blue1), transparent);
+        margin: 30px auto;
+        width: 85%;
     }
 
     body{
@@ -88,17 +87,6 @@
         justify-content: center;
         align-items: center; 
     }
-
-    /* .header{
-        margin: auto;
-        font-family: "OblivionFuture";
-        background-color: var(--blue1);
-        box-shadow: 10px 10px var(--blue3);
-        height: 20%;
-        width: 30%;
-        border-radius: 10px;
-        align-self: center;
-    } */
 
     h1{
         padding: 2%;
@@ -113,13 +101,13 @@
 
     .carousel {
         margin: auto;
-        width: 80%;
-        height: 500px;
+        width: 90%;
+        height: 600px;
         overflow: hidden;
         position: relative;
-        border-radius: 20px;
-        border: 5px solid var(--blue1);
-        box-shadow: 5px 5px 10px var(--blue2);
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px var(--blue2);
     }
 
     .carousel-container {
@@ -129,37 +117,48 @@
     }
 
     .carousel-item {
-        min-width: 100%;
-        height: 100%;
+        flex: 0 0 100%;
+        width: 100%;
+        height: 100%;   
         display: flex;
         justify-content: center;
         align-items: center;
+        overflow: hidden;
     }
 
     .carousel-item img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: cover; 
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.85);
     }
 
     .carousel-text {
-        font-family: "OblivionFuture";
+        font-family: 'OblivionFuture';
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         color: white;
-        font-size: large;
-        font-weight: bold;
+        font-size: 18px;
+        line-height: 1.6;
         text-align: center;
         z-index: 10;
         pointer-events: none;
-        background-color: rgba(31, 34, 214, 0.456);
-        padding: 10px 20px;
-        border-radius: 10px;
-        box-shadow:  1px 1px 1px var(--blue1);
-        letter-spacing: 3px;
-        word-spacing: 7px;
+        background-color: rgba(30, 64, 175, 0.75);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        max-width: 70%;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .carousel-text p {
+        margin: 0;
+        font-family: "OblivionFuture", 'Segoe UI', Tahoma, sans-serif;
+        letter-spacing: 1px;
+        word-spacing: 3px;
     }
 
     button{
@@ -174,20 +173,51 @@
     }
 
     .glow-button {
-            background-color: var(--blue1);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 24px;
-            padding: 15px 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-    .glow-button:hover{
-        background-color: var(--blue2);
-        box-shadow: 2 2 15px var(--blue2);
+        background: linear-gradient(145deg, var(--blue1), var(--blue3));
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 22px;
+        font-weight: bold;
+        font-family: "OblivionFuture", 'Segoe UI', Tahoma, sans-serif;
+        padding: 16px 40px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
+    .glow-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 0 20px var(--blue2);
+    }
+
+    .glow-button:active {
+        transform: translateY(1px);
+    }
+
+    @media (max-width: 768px) {
+        .carousel {
+            height: 400px;
+        }
+        
+        .carousel-text {
+            max-width: 85%;
+            padding: 15px;
+            font-size: 16px;
+        }
+        
+        h1 {
+            font-size: 32px;
+        }
+        
+        .glow-button {
+            font-size: 18px;
+            padding: 12px 30px;
+        }
+    }
 
 </style>
