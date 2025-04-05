@@ -1,0 +1,190 @@
+<script>
+    let currentIndex = 0;
+
+    function autoScrollCarousel() {
+        const carouselContainer = document.querySelector('.carousel-container');
+        const items = document.querySelectorAll('.carousel-item');
+        const totalItems = items.length;
+
+        currentIndex++;
+
+        if (currentIndex >= totalItems) {
+            // Temporarily disable transition for reset
+            carouselContainer.style.transition = 'none';
+            currentIndex = 0;
+            const translateX = -currentIndex * 100;
+            carouselContainer.style.transform = `translateX(${translateX}%)`;
+
+            // Re-enable transition for subsequent scrolling
+            setTimeout(() => {
+                carouselContainer.style.transition = 'transform 0.5s ease-in-out';
+            }, 50);
+        } else {
+            const translateX = -currentIndex * 100;
+            carouselContainer.style.transform = `translateX(${translateX}%)`;
+        }
+    }
+
+    // Set an interval to auto-scroll every 3 seconds
+    setInterval(autoScrollCarousel, 3000);
+</script>
+
+<head>
+    <link rel="stylesheet" href="../static/css/defaultStyle.css">
+</head>
+
+<body>
+    <div class="main">
+        <hr>
+        <div class="header">
+            <h1>Value your car!</h1>
+        </div>
+        <br>
+        <div class="carousel">
+            <div class="carousel-container">
+              <div class="carousel-item"><img src="../static/images/carousel/photo2.webp" alt="Photo 2"></div>
+              <div class="carousel-item"><img src="../static/images/carousel/photo3.webp" alt="Photo 3"></div>
+              <div class="carousel-item"><img src="../static/images/carousel/photo4.webp" alt="Photo 4"></div>
+              <div class="carousel-item"><img src="../static/images/carousel/photo5.webp" alt="Photo 5"></div>
+              <div class="carousel-item"><img src="../static/images/carousel/photo6.webp" alt="Photo 6"></div>
+              <div class="carousel-item"><img src="../static/images/carousel/photo7.webp" alt="Photo 7"></div>
+            </div>
+            <div class="carousel-text">
+                <p>Welcome to Valcar, your trusted destination for accurate and instant car valuations.
+                    Whether you're buying, selling, or just curious, we help you find out exactly what your car is 
+                    worth in today's market. Our advanced algorithm analyzes real-time market data, vehicle condition,
+                    mileage, model year, and regional trends to provide you with a fair, transparent valuation in seconds.</p>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <h1>Please fill out this form so we can retrieve the data that you need:</h1>
+        </div>
+        <div class="row">
+            <button class="glow-button" onclick="location.href='./valuationForm.html';">Click me</button>
+        </div>
+        <hr>
+    </div>
+</body>
+
+<style>
+
+    hr {
+        border: none;
+        border-top: 5px solid var(--blue1);
+        margin: 40px auto;
+        width: 80%;
+    }
+
+    body{
+        background-color: var(--black-grey);
+    }
+
+    .row{
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+    }
+
+    /* .header{
+        margin: auto;
+        font-family: "OblivionFuture";
+        background-color: var(--blue1);
+        box-shadow: 10px 10px var(--blue3);
+        height: 20%;
+        width: 30%;
+        border-radius: 10px;
+        align-self: center;
+    } */
+
+    h1{
+        padding: 2%;
+        color:white;
+        text-shadow: 5px 5px var(--blue3);
+        text-align: center;
+        font-size: 50px;
+        letter-spacing: 3px;
+        word-spacing: 7px;
+        font-family: "OblivionFuture";
+    }
+
+    .carousel {
+        margin: auto;
+        width: 80%;
+        height: 500px;
+        overflow: hidden;
+        position: relative;
+        border-radius: 20px;
+        border: 5px solid var(--blue1);
+        box-shadow: 5px 5px 10px var(--blue2);
+    }
+
+    .carousel-container {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+        height: 100%;
+    }
+
+    .carousel-item {
+        min-width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .carousel-item img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: cover; 
+    }
+
+    .carousel-text {
+        font-family: "OblivionFuture";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: large;
+        font-weight: bold;
+        text-align: center;
+        z-index: 10;
+        pointer-events: none;
+        background-color: rgba(31, 34, 214, 0.456);
+        padding: 10px 20px;
+        border-radius: 10px;
+        box-shadow:  1px 1px 1px var(--blue1);
+        letter-spacing: 3px;
+        word-spacing: 7px;
+    }
+
+    button{
+        background-color: transparent;
+        border-color: transparent;
+        position: relative;
+        color: var(--blue2);
+        font-family: "OblivionFuture";
+        margin: auto;
+        font-size: 50px;
+        padding: 2%;
+    }
+
+    .glow-button {
+            background-color: var(--blue1);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 24px;
+            padding: 15px 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+    .glow-button:hover{
+        background-color: var(--blue2);
+        box-shadow: 2 2 15px var(--blue2);
+    }
+
+
+</style>
