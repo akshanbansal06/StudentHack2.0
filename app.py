@@ -20,6 +20,7 @@ def process_data_and_generate_prediction(data):
     prediction = calculate_prediction(data)  # Replace with your prediction function
     
     # Save prediction to file
+    os.makedirs('static/txt', exist_ok=True)  # Ensure directory exists
     with open('static/txt/predictedPrice.txt', 'w') as f:
         f.write(str(prediction))
     
@@ -37,7 +38,7 @@ def home():
     return render_template('nasaLanding.html')
 
 @app.route('/valuationForm')
-def valuation_form():
+def valuationForm():  # Keep the same function name as in your original code
     # Reset processing flags when accessing the form
     global processing_complete, prediction_result
     processing_complete = False
@@ -65,14 +66,17 @@ def check_status():
 
 @app.route('/results')
 def results():
+    # Debug: Print all available endpoints
+    print("Available endpoints:", [rule.endpoint for rule in app.url_map.iter_rules()])
+    
     # Check if prediction file exists
     try:
         with open('static/txt/predictedPrice.txt', 'r') as f:
             predicted_price = f.read().strip()
         return render_template('results.html', predicted_price=predicted_price)
     except FileNotFoundError:
-        # If file doesn't exist, redirect to valuation form
-        return redirect(url_for('valuation_form'))
+        # Use direct URL instead of url_for to avoid the endpoint issue
+        return redirect('/valuationForm')
 
 @app.route('/submit_data', methods=['POST'])
 def submit_data():
@@ -111,6 +115,10 @@ def submit_data():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    # Ensure directory exists
-    os.makedirs('static/txt', exist_ok=True)
+    # Debug: Print all available endpoints at startup
+    print("*** Flask application routes ***")
+    for rule in app.url_map.iter_rules():
+        print(f"Route: {rule.rule}, Endpoint: {rule.endpoint}")
+    print("******************************")
+    
     app.run(debug=True)
