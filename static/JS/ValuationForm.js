@@ -22,14 +22,13 @@ function validateField(field) {
     return field.validity.valid;
 }
 
+// Add blur and input event listeners to all required fields
 requiredFields.forEach(field => {
     field.addEventListener('blur', () => validateField(field));
     field.addEventListener('input', () => validateField(field));
 });
 
-
-// Form submission
-form.addEventListener('submit', function(e) {
+form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
     // Validate all required fields
@@ -40,74 +39,39 @@ form.addEventListener('submit', function(e) {
         }
     });
 
-    
     if (isValid) {
-        // Collect form data
-        const make = document.getElementById('make').value;
-        const model = document.getElementById('model').value;
-        const year = document.getElementById('year').value;
-        const trim = document.getElementById('trim').value;
-        const mileage = document.getElementById('mileage').value;
-        const fuel = document.getElementById('fuel').value;
-        const transmission = document.getElementById('transmission').value;
-        const color = document.getElementById('color').value;
-
-        // Show loading state on the submit button
-        submitButton.setAttribute('data-loading', 'true');
-        submitButton.disabled = true;
-
-        // Prepare form data to be sent to the server
+        // Collect data from the form
         const formData = {
-            make,
-            model,
-            year,
-            trim,
-            mileage,
-            fuel,
-            transmission,
-            color
+            make: document.getElementById("make").value,
+            model: document.getElementById("model").value,
+            year: document.getElementById("year").value,
+            trim: document.getElementById("trim").value,
+            mileage: document.getElementById("mileage").value,
+            fuel: document.getElementById("fuel").value,
+            transmission: document.getElementById("transmission").value,
+            color: document.getElementById("color").value
         };
 
-        // Send form data to the Flask backend using Fetch API
-        fetch('http://127.0.0.1:5000/get_valuation', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Hide loading state
-            submitButton.removeAttribute('data-loading');
-            submitButton.disabled = false;
+        try {
+            // Send the data to the Flask server via fetch API
+            const response = await fetch('/submit_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
 
-            // Handle the response data (e.g., display the valuation result)
-            const valuationResult = document.getElementById('valuationResult');
-            const valuationDetails = document.getElementById('valuationDetails');
-            valuationResult.style.display = 'block';
-            valuationDetails.innerHTML = `
-                <p>Make: ${data.make}</p>
-                <p>Model: ${data.model}</p>
-                <p>Year: ${data.year}</p>
-                <p>Mileage: ${data.mileage}</p>
-                <p>Fuel: ${data.fuel}</p>
-                <p>Transmission: ${data.transmission}</p>
-                <p>Color: ${data.color}</p>
-                <h3>Estimated Valuation: $${data.valuation.toFixed(2)}</h3>
-            `;
-        })
-        .catch(error => {
-            // Hide loading state in case of an error
-            submitButton.removeAttribute('data-loading');
-            submitButton.disabled = false;
-
-            // Handle the error (e.g., display a message)
+            // Check server response
+            if (response.ok) {
+                const data = await response.json();
+                alert("Data sent successfully and saved to CSV.");
+            } else {
+                throw new Error("Failed to send data to server.");
+            }
+        } catch (error) {
             console.error('Error:', error);
-            alert('There was an error submitting your form. Please try again later.');
-        });
-    } else {
-        // Form is not valid, do not submit
-        console.log('Form is not valid');
+            alert('An error occurred while submitting the data.');
+        }
     }
 });
