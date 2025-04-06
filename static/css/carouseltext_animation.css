@@ -1,0 +1,352 @@
+.carousel-text {
+    font-family: 'OblivionFuture';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: center;
+    z-index: 10;
+    pointer-events: none;
+    background-color: rgba(30, 64, 175, 0.6);
+    padding: 30px;
+    border-radius: 2px;
+    max-width: 70%;
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--blue2);
+    box-shadow: 0 0 15px var(--blue2), inset 0 0 10px rgba(96, 165, 250, 0.3);
+    text-shadow: 0 0 5px var(--blue2);
+    clip-path: polygon(0 5%, 5% 0, 95% 0, 100% 5%, 100% 95%, 95% 100%, 5% 100%, 0 95%);
+}
+
+.glitch-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.cyber-heading {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    color: var(--blue2);
+    text-transform: uppercase;
+}
+
+.carousel-text p {
+    margin-bottom: 15px;
+    font-family: "OblivionFuture", 'Segoe UI', Tahoma, sans-serif;
+    letter-spacing: 1px;
+    word-spacing: 2px;
+}
+
+.cyber-end-text {
+    color: var(--blue2);
+    font-weight: bold;
+}
+
+.corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--blue2);
+    z-index: 2;
+}
+
+.top-left {
+    top: 0;
+    left: 0;
+    border-right: none;
+    border-bottom: none;
+}
+
+.top-right {
+    top: 0;
+    right: 0;
+    border-left: none;
+    border-bottom: none;
+}
+
+.bottom-left {
+    bottom: 0;
+    left: 0;
+    border-right: none;
+    border-top: none;
+}
+
+.bottom-right {
+    bottom: 0;
+    right: 0;
+    border-left: none;
+    border-top: none;
+}
+
+/* Text glitch effect */
+.glitch-text {
+  position: relative;
+  display: inline-block;
+  color: var(--blue2);
+  animation: glitch-skew 1s infinite linear alternate-reverse;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch-text::before {
+  left: 2px;
+  text-shadow: -1px 0 var(--blue1);
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+  left: -2px;
+  text-shadow: -1px 0 var(--blue3);
+  clip: rect(24px, 450px, 36px, 0);
+  animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+/* Additional glitch animation effects */
+.glitch-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -10%;
+  width: 120%;
+  height: 1px;
+  background: var(--blue2);
+  opacity: 0.3;
+  animation: glitch-line 6s infinite;
+}
+
+.glitch-container::after {
+  content: '';
+  position: absolute;
+  height: 10px;
+  width: 100%;
+  left: 0;
+  background: var(--blue2);
+  opacity: 0.15;
+  animation: glitch-sweep 5s infinite;
+}
+
+.data-text {
+  color: var(--blue2);
+  font-weight: bold;
+}
+
+/* Noise overlay */
+.noise-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/png;base64,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");
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 3;
+}
+
+@keyframes glitch-anim2 {
+  0% {
+    clip: rect(18px, 9999px, 72px, 0);
+    transform: skew(0.55deg);
+  }
+  5% {
+    clip: rect(10px, 9999px, 89px, 0);
+    transform: skew(0.28deg);
+  }
+  10% {
+    clip: rect(97px, 9999px, 47px, 0);
+    transform: skew(0.69deg);
+  }
+  15% {
+    clip: rect(94px, 9999px, 91px, 0);
+    transform: skew(0.67deg);
+  }
+  20% {
+    clip: rect(89px, 9999px, 80px, 0);
+    transform: skew(0.92deg);
+  }
+  25% {
+    clip: rect(99px, 9999px, 99px, 0);
+    transform: skew(0.1deg);
+  }
+  30% {
+    clip: rect(10px, 9999px, 36px, 0);
+    transform: skew(0.01deg);
+  }
+  35% {
+    clip: rect(75px, 9999px, 59px, 0);
+    transform: skew(0.1deg);
+  }
+  40% {
+    clip: rect(1px, 9999px, 69px, 0);
+    transform: skew(0.43deg);
+  }
+  45% {
+    clip: rect(19px, 9999px, 73px, 0);
+    transform: skew(0.57deg);
+  }
+  50% {
+    clip: rect(31px, 9999px, 26px, 0);
+    transform: skew(0.92deg);
+  }
+  55% {
+    clip: rect(81px, 9999px, 61px, 0);
+    transform: skew(0.94deg);
+  }
+  60% {
+    clip: rect(64px, 9999px, 36px, 0);
+    transform: skew(0.31deg);
+  }
+  65% {
+    clip: rect(25px, 9999px, 10px, 0);
+    transform: skew(0.18deg);
+  }
+  70% {
+    clip: rect(83px, 9999px, 44px, 0);
+    transform: skew(0.75deg);
+  }
+  75% {
+    clip: rect(21px, 9999px, 31px, 0);
+    transform: skew(0.64deg);
+  }
+  80% {
+    clip: rect(72px, 9999px, 20px, 0);
+    transform: skew(0.61deg);
+  }
+  85% {
+    clip: rect(64px, 9999px, 82px, 0);
+    transform: skew(0.55deg);
+  }
+  90% {
+    clip: rect(69px, 9999px, 34px, 0);
+    transform: skew(0.04deg);
+  }
+  95% {
+    clip: rect(6px, 9999px, 34px, 0);
+    transform: skew(0.01deg);
+  }
+  100% {
+    clip: rect(36px, 9999px, 92px, 0);
+    transform: skew(0.29deg);
+  }
+}
+
+@keyframes glitch-skew {
+  0% {
+    transform: skew(1deg);
+  }
+  10% {
+    transform: skew(0deg);
+  }
+  20% {
+    transform: skew(0deg);
+  }
+  30% {
+    transform: skew(1deg);
+  }
+  40% {
+    transform: skew(-1deg);
+  }
+  50% {
+    transform: skew(-1deg);
+  }
+  60% {
+    transform: skew(0deg);
+  }
+  70% {
+    transform: skew(0deg);
+  }
+  80% {
+    transform: skew(-1deg);
+  }
+  90% {
+    transform: skew(1deg);
+  }
+  100% {
+    transform: skew(0deg);
+  }
+}
+
+@keyframes glitch-line {
+  0% {
+    top: 5%;
+    opacity: 0.1;
+  }
+  20% {
+    top: 20%;
+    opacity: 0.3;
+  }
+  40% {
+    top: 40%;
+    opacity: 0.1;
+  }
+  60% {
+    top: 60%;
+    opacity: 0.3;
+  }
+  80% {
+    top: 80%;
+    opacity: 0.1;
+  }
+  100% {
+    top: 95%;
+    opacity: 0.3;
+  }
+}
+
+@keyframes glitch-sweep {
+  0% {
+    top: -100%;
+    opacity: 0.1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: var(--blue2) }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .carousel-text {
+    max-width: 85%;
+    padding: 15px;
+    font-size: 14px;
+  }
+  
+  .cyber-heading {
+    font-size: 20px;
+  }
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 5px var(--blue2); }
+    50% { box-shadow: 0 0 15px var(--blue2); }
+  }
+  .carousel-text {
+    animation: glow 3s infinite;
+  }
+
+.glitch-text {
+    filter: contrast(1.2) brightness(1.1);
+  }
+
+  
