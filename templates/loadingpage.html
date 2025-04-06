@@ -351,6 +351,28 @@
             currentIndex = (currentIndex + 1) % messages.length;
             subsystemText.textContent = messages[currentIndex];
         }, 2000);
+
+        async function checkStatus() {
+        try {
+            const response = await fetch("/check_status");
+            if (response.ok) {
+                const data = await response.json();
+                if (data.status === "ready") {
+                    window.location.href = "{{ url_for('results') }}";
+                } else {
+                    setTimeout(checkStatus, 2000); // retry after 2 seconds
+                }
+            } else {
+                console.error("Failed to check status.");
+                setTimeout(checkStatus, 3000);
+            }
+        } catch (err) {
+            console.error("Error:", err);
+            setTimeout(checkStatus, 3000);
+            }
+        }
+        // Start checking after page loads
+        window.onload = checkStatus;
     </script>
 </body>
 </html>

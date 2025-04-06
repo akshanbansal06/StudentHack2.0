@@ -17,8 +17,9 @@ def example():
     # Redirect to '/results'
     return render_template('results')
 
-
-
+@app.route('/loadingpage')
+def loadingpage():
+    return render_template('loadingpage.html')
 
 @app.route('/submit_data', methods=['POST'])
 def submit_data():

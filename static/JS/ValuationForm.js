@@ -62,11 +62,10 @@ form.addEventListener('submit', async function (e) {
             });
             
             if (response.ok) {
-                const data = await response.json();
-                // Use Flask's dynamically passed URL here
-                const resultsUrl = "{{ url_for('results') }}";
-                window.location.href = resultsUrl;
-            } else {
+                const loadingUrl = "{{ url_for('loadingpage') }}";
+                window.location.href = loadingUrl;
+            }
+            else {
                 throw new Error("Failed to send data to server.");
             }
         } catch (error) {
