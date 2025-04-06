@@ -200,6 +200,7 @@ def main():
         
         with open(file_path, "w") as file:
             file.write(f"{car_price}")
+        
         # Predict future values for the input car
         future_values = [car_price]
         for year in range(1, 6):
@@ -207,14 +208,37 @@ def main():
             future_values.append(future_value)
 
         # Generate depreciation graph from 2025 to 2030
-        years = list(range(2025, 2031))
-        plt.plot(years, future_values, marker='o')
-        plt.title('Depreciation Graph')
-        plt.xlabel('Year')
-        plt.ylabel('Predicted Price')
-        plt.grid(True)
-        plt.savefig('static/plot/valuation.png')  # Save the graph as a PNG file
-        plt.show()
+        try:
+            # Define the plot file path
+            plot_directory = "static/plot/"
+            plot_filename = "valuation.png"
+            plot_path = os.path.join(plot_directory, plot_filename)
+            
+            # Ensure the directory exists
+            os.makedirs(plot_directory, exist_ok=True)
+            
+            # Delete the existing graph if it exists
+            if os.path.exists(plot_path):
+                os.remove(plot_path)
+                print(f"Removed existing plot file: {plot_path}")
+            
+            # Generate new graph
+            years = list(range(2025, 2031))
+            plt.figure(figsize=(10, 6))
+            plt.plot(years, future_values, marker='o', linewidth=2, color='#1f77b4')
+            plt.title('Vehicle Depreciation Forecast', fontsize=16)
+            plt.xlabel('Year', fontsize=12)
+            plt.ylabel('Predicted Value ($)', fontsize=12)
+            plt.grid(True, linestyle='--', alpha=0.7)
+            plt.tight_layout()
+            
+            # Save the new graph
+            plt.savefig(plot_path)
+            print(f"New plot saved to: {plot_path}")
+            plt.close()  # Close the figure to free memory
+
+        except Exception as e:
+            print(f"Error during graph generation: {e}")
 
     except Exception as e:
         print(f"Error during input car prediction or graph generation: {e}")
