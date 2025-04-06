@@ -206,6 +206,7 @@ def main():
         plt.xlabel('Year')
         plt.ylabel('Predicted Price')
         plt.grid(True)
+        plt.savefig('../static/plot/valuation.png')  # Save the graph as a PNG file
         plt.show()
 
     except Exception as e:
