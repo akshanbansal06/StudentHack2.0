@@ -61,13 +61,21 @@ form.addEventListener('submit', async function (e) {
                 body: JSON.stringify(formData)
             });
             
-            if (response.ok) {
-                const loadingUrl = "{{ url_for('loadingpage') }}";
-                window.location.href = loadingUrl;
-            }
-            else {
-                throw new Error("Failed to send data to server.");
-            }
+            const fs = require('fs');
+
+            // Path to the file you want to check
+            const filePath = '../static/txt/predictedPrice.txt';
+            fs.access(filePath, fs.constants.F_OK, (err) => {
+                if (err) {
+                    window.location.href = "/loadingpage";
+                } else {
+                    console.log(`${filePath} exists.`);
+                    window.location.href = "/results";
+                }
+            });
+
+
+
         } catch (error) {
             console.error('Error:', error);
             alert('An error occurred while submitting the data.');

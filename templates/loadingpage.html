@@ -352,27 +352,18 @@
             subsystemText.textContent = messages[currentIndex];
         }, 2000);
 
-        async function checkStatus() {
-        try {
-            const response = await fetch("/check_status");
-            if (response.ok) {
-                const data = await response.json();
-                if (data.status === "ready") {
-                    window.location.href = "{{ url_for('results') }}";
-                } else {
-                    setTimeout(checkStatus, 2000); // retry after 2 seconds
-                }
+        const fs = require('fs');
+        // Path to the file you want to check
+        const filePath = '../static/txt/predictedPrice.txt';
+        fs.access(filePath, fs.constants.F_OK, (err) => {
+            if (err) {
+                close
             } else {
-                console.error("Failed to check status.");
-                setTimeout(checkStatus, 3000);
+                console.log(`${filePath} exists.`);
+                window.location.href = "/results";
             }
-        } catch (err) {
-            console.error("Error:", err);
-            setTimeout(checkStatus, 3000);
-            }
-        }
-        // Start checking after page loads
-        window.onload = checkStatus;
+        });
+        
     </script>
 </body>
 </html>
