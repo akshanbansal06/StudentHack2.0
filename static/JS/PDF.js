@@ -5,7 +5,6 @@ function generatePDF() {
     const day = String(currentDate.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
 
-    const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
     const text1 = "Here is your car valuation for the next 5 years:";
@@ -13,7 +12,7 @@ function generatePDF() {
     const text3 = "Your total depreciation would be:";
 
     const img = new Image();
-    img.src = "../plot/valuation.png"; // Update with actual image path
+    img.src = "../static/plot/valuation.png";
 
     img.onload = function () {
         const pageWidth = doc.internal.pageSize.width;
@@ -40,7 +39,11 @@ function generatePDF() {
         doc.text(text2, xPosition2, yPosition2);
         doc.text(text3, xPosition3, yPosition3);
 
-        // Save the PDF
-        doc.save(`carValuation~${formattedDate}.pdf`);
+        img.onload = function () {
+            console.log("Image successfully loaded!");
+            // PDF generation logic...
+            doc.save(`carValuation~${formattedDate}.pdf`);
+        };
+        
     };
 }
