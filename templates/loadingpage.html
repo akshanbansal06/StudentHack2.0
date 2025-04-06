@@ -352,16 +352,29 @@
             subsystemText.textContent = messages[currentIndex];
         }, 2000);
 
-        const fs = require('fs');
-        // Path to the file you want to check
-        const filePath = '../static/txt/predictedPrice.txt';
-        fs.access(filePath, fs.constants.F_OK, (err) => {
-            if (err) {
-                close
-            } else {
-                console.log(`${filePath} exists.`);
-                window.location.href = "/results";
+        // JavaScript for the loading page that checks status periodically
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to check processing status
+            function checkStatus() {
+                fetch('/check_status')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'complete') {
+                            window.location.href = data.redirect;
+                        } else {
+                            // Continue checking
+                            setTimeout(checkStatus, 1000); // Check every second
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error checking status:', error);
+                        // Continue checking even if there's an error
+                        setTimeout(checkStatus, 3000); // Try again after 3 seconds
+                    });
             }
+
+            // Start checking status
+            checkStatus();
         });
         
     </script>
