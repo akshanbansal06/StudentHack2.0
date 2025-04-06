@@ -31,6 +31,7 @@
 
 <head>
     <link rel="stylesheet" href="../static/css/defaultStyle.css">
+    <link rel="stylesheet" href="../static/css/carouseltext_animation.css">
 </head>
 
 <body>
@@ -48,10 +49,21 @@
               <div class="carousel-item"><img src="../static/images/carousel/photo7.webp" alt="Photo 7"></div>
             </div>
             <div class="carousel-text">
-                <p>Welcome to Valcar, your trusted destination for accurate and instant car valuations.
-                    Whether you're buying, selling, or just curious, we help you find out exactly what your car is 
-                    worth in today's market. Our advanced algorithm analyzes real-time market data, vehicle condition,
-                    mileage, model year, and regional trends to provide you with a fair, transparent valuation in seconds.</p>
+                <div class="glitch-container">
+                    <div class="corner top-left"></div>
+                    <div class="corner top-right"></div>
+                    <div class="corner bottom-left"></div>
+                    <div class="corner bottom-right"></div>
+                    <div class="noise-overlay"></div>
+                    
+                    <h3 class="cyber-heading"><span class="glitch-text" data-text="[VALCAR_SYSTEM]">[VALCAR_SYSTEM]</span></h3>
+                    
+                    <p><span class="data-text">ACCESS:</span>VEHICLE VALUATION PROTOCOL</p>
+                    
+                    <p>Decrypt your vehicle's true market value in seconds. Our quantum algorithm analyzes real-time market data, vehicle specs, and regional variables to bypass traditional valuation barriers.</p>
+                    
+                    <p class="cyber-end-text"><span class="glitch-text" data-text="[RESULTS_GUARANTEED]">[RESULTS_GUARANTEED]</span> >> INITIATE VALUATION SEQUENCE</p>
+                </div>
             </div>
         </div>
 
@@ -133,34 +145,6 @@
         filter: brightness(0.85);
     }
 
-    .carousel-text {
-        font-family: 'OblivionFuture';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        font-size: 18px;
-        line-height: 1.6;
-        text-align: center;
-        z-index: 10;
-        pointer-events: none;
-        background-color: rgba(30, 64, 175, 0.75);
-        padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        max-width: 70%;
-        backdrop-filter: blur(5px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .carousel-text p {
-        margin: 0;
-        font-family: "OblivionFuture", 'Segoe UI', Tahoma, sans-serif;
-        letter-spacing: 1px;
-        word-spacing: 3px;
-    }
-
     button{
         background-color: transparent;
         border-color: transparent;
@@ -204,12 +188,6 @@
             height: 400px;
         }
         
-        .carousel-text {
-            max-width: 85%;
-            padding: 15px;
-            font-size: 16px;
-        }
-        
         h1 {
             font-size: 32px;
         }
@@ -218,6 +196,6 @@
             font-size: 18px;
             padding: 12px 30px;
         }
-    }
 
+}
 </style>
