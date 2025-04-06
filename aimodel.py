@@ -193,6 +193,13 @@ def main():
         car_price = model.predict(car_pca)[0]
         print(f"Predicted price for the input car: {car_price}")
 
+        # Specify the directory and file name
+        directory = "static/txt/"
+        file_name = "predictedPrice.txt"
+        file_path = os.path.join(directory, file_name)
+        
+        with open(file_path, "w") as file:
+            file.write(f"{car_price}")
         # Predict future values for the input car
         future_values = [car_price]
         for year in range(1, 6):
@@ -206,7 +213,7 @@ def main():
         plt.xlabel('Year')
         plt.ylabel('Predicted Price')
         plt.grid(True)
-        plt.savefig('../static/plot/valuation.png')  # Save the graph as a PNG file
+        plt.savefig('static/plot/valuation.png')  # Save the graph as a PNG file
         plt.show()
 
     except Exception as e:
