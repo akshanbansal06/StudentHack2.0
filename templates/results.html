@@ -24,7 +24,7 @@
             })
             .then(content => {
                 // Update the <h2> element dynamically with the file content
-                document.getElementById("#predictedPrice").textContent = `${content}`; // Use content fetched from file
+                document.getElementById("predictedPrice").textContent = `${content}`; // Use content fetched from file
             })
             .catch(error => {
                 console.error("Error fetching file:", error);
@@ -52,8 +52,8 @@
 
         h2 {
             padding: 2%;
-            color: var(--blue1);
-            text-shadow: 5px 5px var(--blue2);
+            color: white;
+            text-shadow: 2px 2px var(--blue2);
             text-align: center;
             font-size: 30px;
             letter-spacing: 3px;
