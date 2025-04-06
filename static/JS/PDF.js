@@ -41,6 +41,6 @@ function generatePDF() {
         doc.text(text3, xPosition3, yPosition3);
 
         // Save the PDF
-        doc.save(`carValuation~${formattedDate}~.pdf`);
+        doc.save("carValuation.pdf");
     };
 }
