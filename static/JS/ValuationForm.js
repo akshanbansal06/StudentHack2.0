@@ -53,7 +53,6 @@ form.addEventListener('submit', async function (e) {
         };
 
         try {
-            // Send the data to the Flask server via fetch API
             const response = await fetch('/submit_data', {
                 method: 'POST',
                 headers: {
@@ -61,11 +60,12 @@ form.addEventListener('submit', async function (e) {
                 },
                 body: JSON.stringify(formData)
             });
-
-            // Check server response
+            
             if (response.ok) {
                 const data = await response.json();
-                alert("Data sent successfully and saved to CSV.");
+                // Use Flask's dynamically passed URL here
+                const resultsUrl = "{{ url_for('results') }}";
+                window.location.href = resultsUrl;
             } else {
                 throw new Error("Failed to send data to server.");
             }

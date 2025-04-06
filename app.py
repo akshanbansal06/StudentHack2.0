@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import csv
 
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -10,6 +11,14 @@ def home():
 @app.route('/valuationForm')
 def valutationForm():
     return render_template('valuationForm.html')
+
+@app.route('/example')
+def example():
+    # Redirect to '/results'
+    return render_template('results')
+
+
+
 
 @app.route('/submit_data', methods=['POST'])
 def submit_data():

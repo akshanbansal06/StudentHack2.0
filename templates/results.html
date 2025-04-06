@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="../static/JS/PDF.js"></script>
 
     <link rel="stylesheet" href="../static/css/defaultStyle.css">  
     <meta charset="UTF-8">
@@ -33,11 +36,53 @@
             max-width: 100%;
             height: auto;
         }
+
+        .container{
+            background-color: transparent;
+            border-color: transparent;
+            position: relative;
+            color: var(--blue2);
+            font-family: "OblivionFuture";
+            margin: auto;
+            font-size: 50px;
+            padding: 2%;
+        }
+
+        .glow-button {
+            background: linear-gradient(145deg, var(--blue1), var(--blue3));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 22px;
+            font-weight: bold;
+            font-family: "OblivionFuture", 'Segoe UI', Tahoma, sans-serif;
+            padding: 16px 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .glow-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 0 20px var(--blue2);
+        }
+
+        .glow-button:active {
+            transform: translateY(1px);
+        }
     </style>
 </head>
 <body>
     <h1>Your Future-Forecast Graph</h1>
+    <br>
+    <div class="container glow-button">                    
+        <input  type="button" value="View as PDF" onclick="generatePDF()">
+    </div>
     <hr>
-    <img src="{{ url_for('..\) }}" alt="Matplotlib Graph">
+    <img src="{{ url_for() }}" alt="Matplotlib Graph">
 </body>
 </html>
