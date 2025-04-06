@@ -96,7 +96,14 @@ def submit_data():
     try:
         # Check if the CSV file exists, and write the headers only if it doesn't
         file_exists = os.path.isfile(csv_file_path)
-
+        
+        if file_exists:
+            # Code for if file exists:
+            with open(csv_file_path, mode='w', newline='') as csv_file:
+                writer = csv.DictWriter(csv_file, fieldnames=data.keys())
+                writer.writeheader()  # Write headers to the new file
+        
+        # Writing to either a fresh or old file that has been cleared
         with open(csv_file_path, mode='a', newline='') as csv_file:
             writer = csv.DictWriter(csv_file, fieldnames=data.keys())
             if not file_exists:
