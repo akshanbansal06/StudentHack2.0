@@ -157,6 +157,22 @@
   z-index: 3;
 }
 
+@keyframes glitch-anim {
+    0% {
+      clip: rect(32px, 9999px, 84px, 0);
+      transform: skew(0.85deg);
+    }
+    5% {
+      clip: rect(5px, 9999px, 75px, 0);
+      transform: skew(0.38deg);
+    }
+    /* Add more steps similar to glitch-anim2 */
+    100% {
+      clip: rect(16px, 9999px, 62px, 0);
+      transform: skew(0.39deg);
+    }
+}
+
 @keyframes glitch-anim2 {
   0% {
     clip: rect(18px, 9999px, 72px, 0);
