@@ -24,7 +24,7 @@
             })
             .then(content => {
                 // Update the <h2> element dynamically with the file content
-                document.querySelector("h2").textContent = `~${content}~`; // Use content fetched from file
+                document.getElementById("#predictedPrice").textContent = `${content}`; // Use content fetched from file
             })
             .catch(error => {
                 console.error("Error fetching file:", error);
@@ -47,6 +47,17 @@
             font-size: 50px;
             letter-spacing: 3px;
             word-spacing: 7px;
+            font-family: "OblivionFuture";
+        }
+
+        h2 {
+            padding: 2%;
+            color: var(--blue1);
+            text-shadow: 5px 5px var(--blue2);
+            text-align: center;
+            font-size: 30px;
+            letter-spacing: 3px;
+            word-spacing: 7px; 
             font-family: "OblivionFuture";
         }
         img {
@@ -109,7 +120,8 @@
     <br>
     <hr>
     <br>
-    <h2>~Loading Price...~</h2> <!-- Updated dynamically -->
+    <h2>This is your predicted value of the car in 5 years:</h2>
+    <h2 id="predictedPrice"></h2> <!-- Updated dynamically -->
     <br>
     <img src="../static/plot/valuation.png" alt="Matplotlib Graph">
 </body>

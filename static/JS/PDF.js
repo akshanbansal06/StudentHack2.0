@@ -13,7 +13,7 @@ function generatePDF() {
     const text3 = "Your total depreciation would be:";
 
     const img = new Image();
-    img.src = "path_to_your_image.png"; // Update with actual image path
+    img.src = "../plot/valuation.png"; // Update with actual image path
 
     img.onload = function () {
         const pageWidth = doc.internal.pageSize.width;
@@ -41,6 +41,6 @@ function generatePDF() {
         doc.text(text3, xPosition3, yPosition3);
 
         // Save the PDF
-        doc.save("carValuation.pdf");
+        doc.save(`carValuation~${formattedDate}.pdf`);
     };
 }
