@@ -1,216 +1,171 @@
 import os
 import pandas as pd
-from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.metrics import mean_squared_error, r2_score
-import signal
+import threading
 import time
 import matplotlib.pyplot as plt
+from flask import Flask, request, jsonify
 
-# Function to handle timeout
-def handler(signum, frame):
+app = Flask(__name__)
+
+# Timeout handler for long-running tasks
+def handler():
     raise Exception("Model training timeout")
 
-# Set the timeout signal
-signal.signal(signal.SIGALRM, handler)
-signal.alarm(600)  # Timeout after 600 seconds (10 minutes)
+# Timeout class
+class Timeout:
+    def __init__(self, seconds):
+        self.timer = threading.Timer(seconds, handler)
 
-def main():
+    def start(self):
+        self.timer.start()
+
+    def cancel(self):
+        self.timer.cancel()
+
+# Homepage
+@app.route('/')
+def home():
+    return "🚗 Welcome to the Car Price Prediction API"
+
+# Train the model
+@app.route('/train', methods=['POST'])
+def train_model():
+    timeout = Timeout(600)  # 10 minutes
+    timeout.start()
+
     try:
-        # Load the dataset
-        print("Loading datasets...")
+        print("Loading dataset...")
         train_df = pd.read_csv('train.csv')
-        print("Datasets loaded successfully.")
-    except FileNotFoundError as e:
-        print(f"Error loading datasets: {e}")
-        return
+        print("Dataset loaded.")
 
-    # Preprocess the data
-    def preprocess_data(df, columns=None):
-        # Handle missing values
-        df.ffill(inplace=True)
+        def preprocess_data(df):
+            df.ffill(inplace=True)
+            df = pd.get_dummies(df, drop_first=True)
+            return df
 
-        # Encode categorical variables
-        df = pd.get_dummies(df, drop_first=True)
-        
-        # Align columns with the training set
-        if columns is not None:
-            df = df.reindex(columns=columns, fill_value=0)
-        
-        return df
-
-    try:
-        print("Preprocessing training data...")
         train_df = preprocess_data(train_df)
-        train_columns = train_df.columns  # Save the columns for later use
-        print("Training data preprocessed successfully.")
-    except Exception as e:
-        print(f"Error during preprocessing: {e}")
-        return
 
-    try:
-        # Define features and target variable
-        print("Defining features and target variable...")
         X_train = train_df.drop('Price', axis=1)
         y_train = train_df['Price']
-        print("Features and target variable defined successfully.")
-        print(f"Size of X_train: {X_train.shape}")
-        print(f"Size of y_train: {y_train.shape}")
-        print("Sample of X_train:")
-        print(X_train.head())
-        print("Sample of y_train:")
-        print(y_train.head())
 
-        # Handle NaNs in target variables
-        print("Handling NaNs in target variables...")
-        print(f"NaNs in y_train before handling: {y_train.isnull().sum()}")
-        y_train.fillna(y_train.mean(), inplace=True)
-        print(f"NaNs in y_train after handling: {y_train.isnull().sum()}")
-        print("NaNs in target variables handled successfully.")
-
-        # Normalize/scale the data
-        print("Normalizing/scaling the data...")
         scaler = StandardScaler()
         X_train_scaled = scaler.fit_transform(X_train)
-        print("Data normalized/scaled successfully.")
 
-        # Dimensionality reduction with PCA
-        print("Applying PCA for dimensionality reduction...")
         pca = PCA(n_components=50)
         X_train_pca = pca.fit_transform(X_train_scaled)
-        print(f"Size of X_train after PCA: {X_train_pca.shape}")
 
-        # Check for NaNs in X_train_pca, y_train
-        print("Checking for NaNs in scaled datasets and target variables...")
-        if pd.isnull(X_train_pca).any():
-            print("NaNs found in X_train_pca")
-        if pd.isnull(y_train).any():
-            print("NaNs found in y_train")
-
-        if pd.isnull(X_train_pca).any() or pd.isnull(y_train).any():
-            raise ValueError("NaN values found in scaled datasets or target variables")
-        print("No NaNs found in scaled datasets or target variables.")
-    except Exception as e:
-        print(f"Error during normalization/scaling or NaN check: {e}")
-        return
-
-    try:
-        # Initialize and train the model
-        print("Initializing the model...")
         model = LinearRegression()
-        print("Training the model...")
         start_time = time.time()
         model.fit(X_train_pca, y_train)
         end_time = time.time()
-        print(f"Model trained successfully in {end_time - start_time} seconds.")
-    except Exception as e:
-        print(f"Error during model training: {e}")
-        return
-    finally:
-        # Disable the alarm
-        signal.alarm(0)
 
-    try:
-        # Make predictions on the training set
-        print("Making predictions...")
         y_pred = model.predict(X_train_pca)
-        print("Predictions made successfully.")
-        print(f"Sample of predictions: {y_pred[:5]}")
-
-        # Handle NaNs in predictions
-        if pd.isnull(y_pred).any():
-            print("NaN values found in predictions. Replacing NaNs with the mean of predictions.")
-            y_pred = pd.Series(y_pred).fillna(y_pred.mean()).values
-    except Exception as e:
-        print(f"Error during prediction: {e}")
-        return
-
-    try:
-        # Evaluate the model on the training set
-        print("Evaluating the model...")
         mse = mean_squared_error(y_train, y_pred)
         r2 = r2_score(y_train, y_pred)
 
-        print(f'Mean Squared Error: {mse}')
-        print(f'R-squared: {r2}')
-    except Exception as e:
-        print(f"Error during model evaluation: {e}")
-        return
-
-    # Function to predict car value 5 years later and calculate depreciation
-    def predict_future_value(current_value, rate_of_depreciation=0.15):
-        future_value = current_value * ((1 - rate_of_depreciation) ** 5)
-        depreciation = current_value - future_value
-        return future_value, depreciation
-
-    try:
-        # Predict future values for all cars in the training set and calculate depreciation
-        print("Predicting future values and calculating depreciation...")
+        # Save model artifacts for reuse
         train_df['predicted_price'] = y_pred
-        train_df['future_value'] = train_df['predicted_price'].apply(lambda x: predict_future_value(x)[0])
-        train_df['depreciation'] = train_df['predicted_price'].apply(lambda x: predict_future_value(x)[1])
-        print("Future values and depreciation predicted successfully.")
-        print("Sample of future values and depreciation:")
-        print(train_df[['predicted_price', 'future_value', 'depreciation']].head())
+        train_df.to_csv('predicted_values.csv', index=False)
 
-        # Save the results to a CSV file
-        output_path = 'predicted_values.csv'
-        train_df.to_csv(output_path, index=False)
-        print(f"Predicted values and depreciation saved to '{output_path}'.")
+        print(f"✅ Model trained in {end_time - start_time:.2f}s | MSE: {mse:.2f} | R²: {r2:.4f}")
+        return jsonify({"message": "Model trained successfully", "mse": mse, "r2": r2}), 200
+
     except Exception as e:
-        print(f"Error during prediction or saving results: {e}")
+        return jsonify({"error": str(e)}), 500
 
-    # Take input for a specific car and generate a depreciation graph
+    finally:
+        timeout.cancel()
+
+# Predict future car prices (depreciation)
+@app.route('/predict', methods=['POST'])
+def predict_future_price():
     try:
-        print("Taking input for a specific car...")
-        car_attributes = {
-            'ID': 12345678,
-            'Prod. year': 2020,
-            'Cylinders': 4.0,
-            'Airbags': 6,
-            'Levy_1011': False,
-            'Color_Black': False,
-            'Color_Blue': True,
-            'Color_Brown': False,
-            'Color_Green': False,
-            'Color_Grey': False,
-            'Color_Orange': False,
-            'Color_Pink': False,
-            'Color_Purple': False,
-            'Color_Red': False,
-            'Color_Silver': False,
-            'Color_Sky blue': False,
-            'Color_White': False,
-            'Color_Yellow': False
-        }
+        train_df = pd.read_csv('train.csv')
+        df = train_df.copy()
+        df.ffill(inplace=True)
+        df = pd.get_dummies(df, drop_first=True)
 
-        car_df = pd.DataFrame([car_attributes])
-        car_df = preprocess_data(car_df, columns=train_columns.drop('Price'))  # Exclude 'Price' column
-        car_scaled = scaler.transform(car_df)
-        car_pca = pca.transform(car_scaled)
-        car_price = model.predict(car_pca)[0]
-        print(f"Predicted price for the input car: {car_price}")
+        X = df.drop('Price', axis=1)
+        y = df['Price']
 
-        # Predict future values for the input car
-        future_values = [car_price]
-        for year in range(1, 6):
-            future_value, _ = predict_future_value(future_values[-1])
-            future_values.append(future_value)
+        scaler = StandardScaler()
+        X_scaled = scaler.fit_transform(X)
 
-        # Generate depreciation graph from 2025 to 2030
-        years = list(range(2025, 2031))
-        plt.plot(years, future_values, marker='o')
-        plt.title('Depreciation Graph')
-        plt.xlabel('Year')
-        plt.ylabel('Predicted Price')
-        plt.grid(True)
-        plt.savefig('../static/plot/valuation.png')  # Save the graph as a PNG file
-        plt.show()
+        pca = PCA(n_components=50)
+        X_pca = pca.fit_transform(X_scaled)
+
+        model = LinearRegression()
+        model.fit(X_pca, y)
+
+        input_data = request.get_json()
+
+        future_years = list(range(2025, 2031))
+        predictions = []
+
+        for future_year in future_years:
+            car = input_data.copy()
+            car['Year'] = future_year
+
+            input_df = pd.DataFrame([car])
+            full_df = pd.concat([train_df, input_df], ignore_index=True)
+            full_df.ffill(inplace=True)
+            full_df = pd.get_dummies(full_df, drop_first=True)
+
+            # Align with training columns
+            for col in X.columns:
+                if col not in full_df.columns:
+                    full_df[col] = 0
+            full_df = full_df[X.columns]
+
+            scaled = scaler.transform(full_df)
+            reduced = pca.transform(scaled)
+            future_pred = model.predict(reduced)[-1]
+
+            predictions.append({
+                "year": future_year,
+                "predicted_price": round(float(future_pred), 2)
+            })
+
+        return jsonify({"future_predictions": predictions}), 200
 
     except Exception as e:
-        print(f"Error during input car prediction or graph generation: {e}")
+        return jsonify({"error": str(e)}), 500
 
-if __name__ == "__main__":
-    main()
+# Plot depreciation chart based on /predict output
+@app.route('/plot', methods=['POST'])
+def plot_depreciation():
+    try:
+        input_data = request.get_json()
+
+        # Call predict endpoint internally
+        with app.test_client() as client:
+            response = client.post('/predict', json=input_data)
+            result = response.get_json()
+            predictions = result["future_predictions"]
+
+        years = [p["year"] for p in predictions]
+        prices = [p["predicted_price"] for p in predictions]
+
+        plt.figure(figsize=(8, 5))
+        plt.plot(years, prices, marker='o', label='Predicted Depreciation')
+        plt.title('Car Price Depreciation Over Time')
+        plt.xlabel('Year')
+        plt.ylabel('Predicted Price ($)')
+        plt.grid(True)
+        plt.legend()
+        os.makedirs('static', exist_ok=True)
+        plt.savefig('static/depreciation.png')
+        plt.close()
+
+        return jsonify({"message": "Graph generated", "path": "/static/depreciation.png"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Start server
+if __name__ == '__main__':
+    app.run(debug=True)
