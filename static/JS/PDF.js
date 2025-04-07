@@ -1,49 +1,38 @@
 function generatePDF() {
+    console.log("printing PDF");
+    const { jsPDF } = window.jspdf;
     const currentDate = new Date();
-    const year = currentDate.getFullYear();
-    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-    const day = String(currentDate.getDate()).padStart(2, '0');
-    const formattedDate = `${year}-${month}-${day}`;
-
-    const doc = new jsPDF();
+    const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
 
     const text1 = "Here is your car valuation for the next 5 years:";
     const text2 = "Thank you for using our services!";
-    const text3 = "Your total depreciation would be:";
 
-    const img = new Image();
-    img.src = "../static/plot/valuation.png";
-
-    img.onload = function () {
+    // Step 1: Load the text and image first
+    Promise.all([
+        fetch("../static/txt/predictedPrice.txt").then(r => r.text()),
+        new Promise((resolve) => {
+            const img = new Image();
+            img.src = "../static/plot/valuation.png";
+            img.onload = () => resolve(img);
+        })
+    ]).then(([predictedText, img]) => {
+        const text3 = `Your total depreciation would be: ${predictedText.trim()}`;
+        const doc = new jsPDF();
         const pageWidth = doc.internal.pageSize.width;
-        const textWidth1 = doc.getTextWidth(text1);
-        const textWidth2 = doc.getTextWidth(text2);
-        const textWidth3 = doc.getTextWidth(text3);
-        const xPosition1 = (pageWidth / 2) - (textWidth1 / 2);
-        const xPosition2 = (pageWidth / 2) - (textWidth2 / 2);
-        const xPosition3 = (pageWidth / 2) - (textWidth3 / 2);
-        const yPosition1 = 100;
-        const yPosition2 = yPosition1 + 20 + 100; // Adjust based on image height
-        const yPosition3 = yPosition2 + 20;
 
-        const imgXPosition = 15; // Example x position
-        const imgYPosition = yPosition1 + 10; // Example y position
+        const x1 = (pageWidth - doc.getTextWidth(text1)) / 2;
+        const x2 = (pageWidth - doc.getTextWidth(text2)) / 2;
+        const x3 = (pageWidth - doc.getTextWidth(text3)) / 2;
 
-        // Add the first line of text
-        doc.text(text1, xPosition1, yPosition1);
+        const y1 = 100;
+        const y2 = y1 + 120;
+        const y3 = y2 + 20;
 
-        // Add the image
-        doc.addImage(img, 'PNG', imgXPosition, imgYPosition, 180, 100); // Example dimensions
+        doc.text(text1, x1, y1);
+        doc.addImage(img, 'PNG', 15, y1 + 10, 180, 100); // Adjust size if needed
+        doc.text(text2, x2, y2);
+        doc.text(text3, x3, y3);
 
-        // Add subsequent text
-        doc.text(text2, xPosition2, yPosition2);
-        doc.text(text3, xPosition3, yPosition3);
-
-        img.onload = function () {
-            console.log("Image successfully loaded!");
-            // PDF generation logic...
-            doc.save(`carValuation~${formattedDate}.pdf`);
-        };
-        
-    };
+        doc.save(`carValuation~${formattedDate}.pdf`);
+    });
 }

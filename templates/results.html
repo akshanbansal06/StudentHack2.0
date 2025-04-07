@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.legacy.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="../static/JS/PDF.js"></script>
-
     <link rel="stylesheet" href="../static/css/defaultStyle.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matplotlib Graph</title>
 
     <script>
+
         // Path to your text file in the directory
         const filePath = "../static/txt/predictedPrice.txt";
 
@@ -115,7 +115,7 @@
     <h1>Your Future-Forecast Graph</h1>
     <br>
     <div class="container">
-        <input class="glow-button" type="button" value="Download PDF" onclick="generatePDF()">
+        <button class="glow-button" type="button" onclick="generatePDF()">Download PDF</button>
     </div>
     <br>
     <hr>
