@@ -3,7 +3,7 @@
 .slider-wrapper {
   width: 100%;
   max-width: 100%;
-  max-height: 80%;
+  max-height: 100%;
   margin: 0 auto;
   outline: none;
 }
@@ -14,7 +14,7 @@
   justify-content: center;
   align-items: center;
   height: 900px;
-  padding: 1rem;
+  padding-top: 50px;
   outline: none;
 }
 
