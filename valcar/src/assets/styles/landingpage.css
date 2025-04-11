@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+body {
+    background-color: var(--black-grey);
+    
+}
+
+.home-page {
+    background-color: var(--black-grey);
+    padding-top:100px;
+}
+
+hr {
+    border: none;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--blue1), transparent);
+    margin: 30px auto;
+    width: 85%;
+}
+
+.cyber-heading {
+    font-family: "OblivionFuture";
+    text-align: center;
+    font-size: 48px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    color: var(--blue1);
+    text-transform: uppercase;
+}
+
+.desc-text{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    
+    padding-top: 100px;
+    position: absolute;
+    z-index: 1; /* Brings the text infront*/
+    text-align: center;
+   
+    font-size: 30px;
+    background-size: 300%, 300%;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: var(--blue1);
+    text-shadow:  5px 0px 10px rgb(0, 0, 0);
+    font-family: "OblivionFuture";
+
+    /* Prevent user from being able to interact wit the text */
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select:none;
+
+}
+
+@keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-50%, -20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(-50%, 0);
+    }
+  }
+  
+  .animate-fade-in-down {
+    animation: fadeInDown 1s ease-out forwards;
+  }

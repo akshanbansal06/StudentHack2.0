@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: "OblivionFuture";
+    src: url(../src/assets/fonts/OblivionFutureFree.ttf);
+}
+
+:root {
+    --black-grey: #131313; 
+    --dark-grey: #202020;
+    --blue0: #204d82;
+    --blue1: #3B82F6;
+    --blue2: #60A5FA;
+    --blue3: #1E40AF;
+    --blue-black: #000113;
+    --error-color: #ff6666;
+    --success-color: #4CAF50;
+    --input-bg: #2c2c2c;
+    --text-light: #1E40AF;
+    --text-lighter: #d0d0d0;
+    --border-color: #444444;
+}
+
+@theme {
+    --color-black-grey: #131313;
+    --blue-black: #000113;
+    --color-blue0: #204d82;
+    --color-blue1: #3B82F6;
+    --color-blue2: #60A5FA;
+    --color-blue3: #1E40AF;
+    --font-OblivionFuture: "OblivionFuture";
+}
+
+Button {
+    font-family: "OblivionFuture";
+}

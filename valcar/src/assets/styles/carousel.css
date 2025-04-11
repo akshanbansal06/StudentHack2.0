@@ -1,0 +1,30 @@
+@import "tailwindcss";
+/* Center the slider */
+.slider-wrapper {
+  width: 100%;
+  max-width: 100%;
+  max-height: 80%;
+  margin: 0 auto;
+  outline: none;
+}
+
+/* Style the carousel container */
+.carousel-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 900px;
+  padding: 1rem;
+  outline: none;
+}
+
+/* Style the image properly */
+.carousel-item img {
+  max-width: 120%;
+  max-height: 120%;
+  object-fit: contain;
+  margin: 0 auto; /* Centering the images within the slidebar */
+  transition: transform 0.3s ease-in-out;
+  filter: grayscale();
+  outline: none;
+}
