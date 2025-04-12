@@ -5,6 +5,16 @@
     src: url(../src/assets/fonts/OblivionFutureFree.ttf);
 }
 
+@font-face {
+    font-family: "Font";
+    src: url(../src/assets//fonts/Font.otf);
+}
+
+@font-face {
+    font-family: "FontBold";
+    src: url(../src/assets//fonts/FontBold.otf);
+}
+
 :root {
     --black-grey: #131313; 
     --dark-grey: #202020;
@@ -29,8 +39,5 @@
     --color-blue2: #60A5FA;
     --color-blue3: #1E40AF;
     --font-OblivionFuture: "OblivionFuture";
-}
-
-Button {
-    font-family: "OblivionFuture";
+    --font-Font: "Font";
 }

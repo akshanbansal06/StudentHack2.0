@@ -19,7 +19,8 @@ hr {
 }
 
 .cyber-heading {
-    font-family: "OblivionFuture";
+    font-family: "FontBold";
+    font-weight: 300;
     text-align: center;
     font-size: 48px;
     font-weight: bold;
@@ -34,7 +35,7 @@ hr {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 50%;
+    width: 40%;
     left: 50%;
     transform: translateX(-50%);
 
@@ -50,8 +51,8 @@ hr {
     letter-spacing: 2px;
     color: var(--blue1);
     text-shadow:  5px 0px 10px rgb(0, 0, 0);
-    font-family: "OblivionFuture";
-
+    font-family: "Font";
+   
     /* Prevent user from being able to interact wit the text */
     pointer-events: none;
     user-select: none;
